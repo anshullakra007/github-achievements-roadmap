@@ -30,8 +30,17 @@ class TaskWorker {
           await handler(task.data);
           console.log(`[Worker] Successfully processed task ${task.id}`);
         } catch (error) {
-          console.error(`[Worker] Failed task ${task.id}:`, error);
-          // TODO: implement retry mechanism
+          const retries = (task.retries || 0) + 1;
+          if (retries <= 3) {
+            const backoff = Math.pow(2, retries) * 1000;
+            console.warn(`[Worker] Task ${task.id} failed, retrying in ${backoff}ms...`);
+            setTimeout(() => {
+              task.retries = retries;
+              this.redis.rpush(this.queueName, JSON.stringify(task));
+            }, backoff);
+          } else {
+            console.error(`[Worker] Task ${task.id} failed permanently:`, error);
+          }
         }
       }
     }
