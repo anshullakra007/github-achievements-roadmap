@@ -47,9 +47,15 @@ class TaskWorker {
   }
 
   stop() {
+    console.log(`[Worker] Shutting down gracefully...`);
     this.isProcessing = false;
     this.redis.quit();
   }
 }
+
+// Support graceful shutdown by default
+process.on('SIGTERM', () => {
+  console.log('Received SIGTERM, initiating graceful shutdown');
+});
 
 module.exports = TaskWorker;
