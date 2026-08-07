@@ -1,0 +1,22 @@
+{
+  "name": "async-task-worker",
+  "version": "1.0.0",
+  "description": "A robust async task processing queue for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "task",
+    "queue",
+    "worker",
+    "async",
+    "redis"
+  ],
+  "author": "Anshul Kumar",
+  "license": "MIT",
+  "dependencies": {
+    "ioredis": "^5.3.2"
+  }
+}
